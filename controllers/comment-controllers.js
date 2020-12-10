@@ -31,6 +31,47 @@ const commentController = {
             .catch(err => res.json(err));
     },
 
+    // replies exist directly within a comment
+    // with new replies, we are updating an existing comment 
+    // pass params 
+    addReply({ params, body }, res) {
+        // find comment and update it
+        Comment.findOneAndUpdate(
+            // where statement
+            { _id: params.commentId },
+            // add the data to the array
+            { $push: { replies: body } },
+            // return the updated comment
+            { new: true }
+        )
+            .then(dbPizzaData => {
+                if (!dbPizzaData) {
+                    res.status(404).json({ message: 'No pizza found with this id!' });
+                    return;
+                }
+                res.json(dbPizzaData);
+            })
+            .catch(err => res.json(err));
+    },
+
+    // remove reply
+    // needs to delete the reply and update the comment
+    // destructure 'params' for use
+    removeReply({ params }, res) {
+        // finds the comment document and updates it
+        Comment.findOneAndUpdate(
+            // where statement
+            { _id: params.commentId },
+            // remove the specific reply from the replies array
+            // where the replyId matches the value of params.replyId passed in from the route
+            { $pull: { replies: { replyId: params.replyId } } },
+            // returns the updated comment object
+            { new: true }
+        )
+            .then(dbPizzaData => res.json(dbPizzaData))
+            .catch(err => res.json(err));
+    },
+
     // remove comment
     // needs to delete the comment from the database but also from the pizza object
     // destructure 'params' for use
