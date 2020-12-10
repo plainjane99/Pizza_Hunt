@@ -69,6 +69,9 @@ const handlePizzaSubmit = event => {
     })
     .catch(err => {
       console.log(err);
+      // if a submission fails (due to no internet connection), the data will be stored in a new_pizza object store
+      // in the indexedDB database
+      saveRecord(formData);
     });
 };
 
