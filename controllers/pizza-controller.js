@@ -74,7 +74,9 @@ const pizzaController = {
         // first parameter is the "where" clause
         // second paramater is the updated data
         // third paramter of { new: true } returns an updated version of the document rather than the original
-        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
+        // we add the runValidators to make sure that the validator also runs when we update something 
+        // and not just when it is first created
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
             .then(dbPizzaData => {
                 if (!dbPizzaData) {
                     res.status(404).json({ message: 'No pizza found with this id!' });

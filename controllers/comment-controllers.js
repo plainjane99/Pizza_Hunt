@@ -42,7 +42,7 @@ const commentController = {
             // add the data to the array
             { $push: { replies: body } },
             // return the updated comment
-            { new: true }
+            { new: true, runValidators: true }
         )
             .then(dbPizzaData => {
                 if (!dbPizzaData) {

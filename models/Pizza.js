@@ -12,10 +12,14 @@ const PizzaSchema = new Schema(
         // we instruct the schema that this data will adhere to the built-in JavaScript data types
         // no special imported data types are required 
         pizzaName: {
-            type: String
+            type: String,
+            required: true,
+            trim: true
         },
         createdBy: {
-            type: String
+            type: String, 
+            required: true,
+            trim: true
         },
         createdAt: {
             type: Date,
@@ -26,6 +30,10 @@ const PizzaSchema = new Schema(
         },
         size: {
             type: String,
+            required: true,
+            // enum stands for enumerable, which refers to a set of data that can be iterated over
+            // it provides an array of options that are acceptable
+            enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
             default: 'Large'
         },
         toppings: [],
